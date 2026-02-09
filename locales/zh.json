@@ -1,0 +1,97 @@
+{
+  "nav": {
+    "record": "记录",
+    "history": "历史",
+    "insights": "洞察",
+    "settings": "设置"
+  },
+  "record": {
+    "title": "晚睡记录",
+    "date": "日期",
+    "sleepTime": "入睡时间",
+    "reason": "晚睡原因",
+    "reasonPlaceholder": "今天为什么晚睡了？",
+    "moodScore": "状态评分",
+    "submit": "提交记录",
+    "analyzing": "AI 分析中...",
+    "saving": "保存中...",
+    "saved": "已保存",
+    "streak": "连续记录",
+    "streakDays": "天",
+    "streakMessages": [
+      "开始记录吧！",
+      "好的开始！",
+      "继续保持！",
+      "太棒了！",
+      "非常优秀！",
+      "你是最棒的！"
+    ]
+  },
+  "analysis": {
+    "title": "AI 分析结果",
+    "mainReasons": "主要原因",
+    "confidence": "置信度",
+    "suggestions": "改善建议",
+    "tags": "标签"
+  },
+  "history": {
+    "title": "历史记录",
+    "search": "搜索",
+    "searchPlaceholder": "搜索原因...",
+    "last7Days": "最近7天",
+    "last30Days": "最近30天",
+    "noRecords": "暂无记录",
+    "edit": "编辑",
+    "delete": "删除",
+    "confirmDelete": "确认删除这条记录吗？",
+    "cancel": "取消",
+    "save": "保存",
+    "editRecord": "编辑记录"
+  },
+  "insights": {
+    "title": "数据洞察",
+    "last7Days": "最近7天",
+    "last30Days": "最近30天",
+    "topReasons": "晚睡原因 Top 5",
+    "sleepStats": "入睡时间统计",
+    "average": "平均",
+    "earliest": "最早",
+    "latest": "最晚",
+    "trend": "最近14天趋势",
+    "aiAnalysis": "AI 模式分析",
+    "patterns": "行为模式",
+    "evidence": "证据",
+    "frequency": "频率",
+    "weekdayAnalysis": "星期分析",
+    "worstDay": "最差日期",
+    "trendDirection": "趋势方向",
+    "improving": "改善中",
+    "worsening": "恶化中",
+    "stable": "稳定",
+    "advice": "可操作建议",
+    "needMoreRecords": "需要至少3条记录才能进行AI分析"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "export": "数据导出",
+    "exportCSV": "导出 CSV",
+    "exportJSON": "导出 JSON",
+    "clearData": "清空数据",
+    "clearConfirm": "请输入「确认清空」来清除所有数据",
+    "clearConfirmText": "确认清空",
+    "clearButton": "清空所有数据",
+    "noRecordsToClear": "没有记录可清空",
+    "privacy": "隐私说明",
+    "privacyPoints": [
+      "数据存储在安全的云数据库中",
+      "AI 分析仅用于提供个人化建议",
+      "我们不会与第三方共享您的数据",
+      "您可以随时导出或删除所有数据"
+    ],
+    "about": "关于",
+    "version": "版本",
+    "description": "帮助您追踪和改善晚睡习惯的应用",
+    "totalRecords": "记录总数"
+  }
+}

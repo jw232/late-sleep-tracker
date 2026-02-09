@@ -1,0 +1,97 @@
+{
+  "nav": {
+    "record": "Record",
+    "history": "History",
+    "insights": "Insights",
+    "settings": "Settings"
+  },
+  "record": {
+    "title": "Late Sleep Record",
+    "date": "Date",
+    "sleepTime": "Sleep Time",
+    "reason": "Reason for Late Sleep",
+    "reasonPlaceholder": "Why did you stay up late today?",
+    "moodScore": "Mood Score",
+    "submit": "Submit Record",
+    "analyzing": "AI Analyzing...",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "streak": "Streak",
+    "streakDays": "days",
+    "streakMessages": [
+      "Start recording!",
+      "Good start!",
+      "Keep it up!",
+      "Awesome!",
+      "Excellent!",
+      "You're the best!"
+    ]
+  },
+  "analysis": {
+    "title": "AI Analysis Result",
+    "mainReasons": "Main Reasons",
+    "confidence": "Confidence",
+    "suggestions": "Suggestions",
+    "tags": "Tags"
+  },
+  "history": {
+    "title": "History",
+    "search": "Search",
+    "searchPlaceholder": "Search reasons...",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "noRecords": "No records found",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this record?",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editRecord": "Edit Record"
+  },
+  "insights": {
+    "title": "Insights",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "topReasons": "Top 5 Reasons",
+    "sleepStats": "Sleep Time Stats",
+    "average": "Average",
+    "earliest": "Earliest",
+    "latest": "Latest",
+    "trend": "Last 14 Days Trend",
+    "aiAnalysis": "AI Pattern Analysis",
+    "patterns": "Behavior Patterns",
+    "evidence": "Evidence",
+    "frequency": "Frequency",
+    "weekdayAnalysis": "Weekday Analysis",
+    "worstDay": "Worst Day",
+    "trendDirection": "Trend Direction",
+    "improving": "Improving",
+    "worsening": "Worsening",
+    "stable": "Stable",
+    "advice": "Actionable Advice",
+    "needMoreRecords": "Need at least 3 records for AI analysis"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "export": "Data Export",
+    "exportCSV": "Export CSV",
+    "exportJSON": "Export JSON",
+    "clearData": "Clear Data",
+    "clearConfirm": "Type \"CONFIRM\" to clear all data",
+    "clearConfirmText": "CONFIRM",
+    "clearButton": "Clear All Data",
+    "noRecordsToClear": "No records to clear",
+    "privacy": "Privacy",
+    "privacyPoints": [
+      "Data is stored in a secure cloud database",
+      "AI analysis is only used to provide personalized suggestions",
+      "We do not share your data with third parties",
+      "You can export or delete all data at any time"
+    ],
+    "about": "About",
+    "version": "Version",
+    "description": "An app to help you track and improve your late sleep habits",
+    "totalRecords": "Total Records"
+  }
+}
