@@ -40,3 +40,11 @@ export interface PatternAnalysis {
   trend: 'improving' | 'worsening' | 'stable';
   actionable_advice: string[];
 }
+
+export interface SubscriptionStatus {
+  isPro: boolean;
+  aiUsageThisMonth: number;
+  aiLimitReached: boolean;
+  currentPeriodEnd: string | null;
+  cancelAtPeriodEnd: boolean;
+}

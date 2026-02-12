@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase/client';
 import { useLocale } from '@/hooks/use-locale';
-import { Download, Trash2, Shield, Info } from 'lucide-react';
+import { Download, Trash2, Shield, Info, LogOut } from 'lucide-react';
 
 export default function SettingsPage() {
+  const router = useRouter();
   const { locale, setLocale, t } = useLocale();
   const [confirmText, setConfirmText] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
@@ -51,6 +54,7 @@ export default function SettingsPage() {
   };
 
   return (
+    <div className="mx-auto max-w-2xl px-4 py-6">
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{t.settings.title}</h1>
 
@@ -163,6 +167,20 @@ export default function SettingsPage() {
           </p>
         </CardContent>
       </Card>
+
+      {/* Sign Out */}
+      <Button
+        variant="outline"
+        className="w-full"
+        onClick={async () => {
+          await supabase.auth.signOut();
+          router.push('/login');
+        }}
+      >
+        <LogOut className="h-4 w-4 mr-2" />
+        {t.settings.signOut}
+      </Button>
+    </div>
     </div>
   );
 }

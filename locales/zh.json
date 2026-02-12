@@ -3,6 +3,7 @@
     "record": "记录",
     "history": "历史",
     "insights": "洞察",
+    "billing": "订阅",
     "settings": "设置"
   },
   "record": {
@@ -16,6 +17,7 @@
     "analyzing": "AI 分析中...",
     "saving": "保存中...",
     "saved": "已保存",
+    "error": "提交失败，请重试",
     "streak": "连续记录",
     "streakDays": "天",
     "streakMessages": [
@@ -41,6 +43,7 @@
     "last7Days": "最近7天",
     "last30Days": "最近30天",
     "noRecords": "暂无记录",
+    "error": "加载失败，请重试",
     "edit": "编辑",
     "delete": "删除",
     "confirmDelete": "确认删除这条记录吗？",
@@ -69,7 +72,18 @@
     "worsening": "恶化中",
     "stable": "稳定",
     "advice": "可操作建议",
-    "needMoreRecords": "需要至少3条记录才能进行AI分析"
+    "needMoreRecords": "需要至少3条记录才能进行AI分析",
+    "error": "加载失败，请重试"
+  },
+  "login": {
+    "title": "晚睡记录",
+    "subtitle": "记录你的晚睡时间，用 AI 发现改善方向",
+    "google": "使用 Google 登录",
+    "or": "或",
+    "emailPlaceholder": "输入邮箱地址",
+    "sendLink": "发送登录链接",
+    "checkEmail": "登录链接已发送，请查收邮箱",
+    "error": "登录失败，请重试"
   },
   "settings": {
     "title": "设置",
@@ -92,6 +106,60 @@
     "about": "关于",
     "version": "版本",
     "description": "帮助您追踪和改善晚睡习惯的应用",
-    "totalRecords": "记录总数"
+    "totalRecords": "记录总数",
+    "signOut": "退出登录"
+  },
+  "landing": {
+    "heroTitle": "理解你的每一个晚睡夜晚",
+    "heroSubtitle": "AI 驱动的晚睡追踪，帮你发现规律、养成好习惯，终于可以早点上床。",
+    "heroCTA": "免费开始记录",
+    "featuresTitle": "你需要的一切",
+    "feature1Title": "AI 分析",
+    "feature1Desc": "借助先进 AI，获取晚睡原因的个性化洞察。",
+    "feature2Title": "连续记录",
+    "feature2Desc": "通过每日记录连续天数和激励里程碑，养成持续习惯。",
+    "feature3Title": "模式洞察",
+    "feature3Desc": "发现跨日和跨周的睡眠行为隐藏规律。",
+    "feature4Title": "数据导出",
+    "feature4Desc": "随时以 CSV 或 JSON 格式导出数据。你的数据，你做主。",
+    "howTitle": "如何使用",
+    "step1Title": "记录",
+    "step1Desc": "每晚花几秒钟记录入睡时间和晚睡原因。",
+    "step2Title": "分析",
+    "step2Desc": "AI 识别你的主要原因并提供改善建议。",
+    "step3Title": "改善",
+    "step3Desc": "追踪进展，逐步建立更健康的睡眠习惯。",
+    "pricingTitle": "简单定价",
+    "free": "免费版",
+    "freePriceLabel": "¥0",
+    "freeFeatures": ["每月 5 次 AI 分析", "每日记录", "基础洞察", "数据导出"],
+    "pro": "Pro",
+    "proPriceLabel": "¥29.9/月",
+    "proFeatures": ["无限 AI 分析", "高级模式分析", "星期维度洞察", "优先支持"],
+    "finalCTATitle": "准备好睡个好觉了吗？",
+    "finalCTASubtitle": "加入我们，今晚就开始理解你的晚睡习惯。",
+    "finalCTAButton": "免费开始",
+    "footer": "晚睡记录"
+  },
+  "billing": {
+    "subscription": "订阅",
+    "freePlan": "免费版",
+    "proPlan": "Pro",
+    "currentPlan": "当前方案",
+    "monthly": "月付 $3.99",
+    "yearly": "年付 $39.99",
+    "yearlySave": "省16%",
+    "upgrade": "升级到 Pro",
+    "manageSubscription": "管理订阅",
+    "cancelAtEnd": "将在到期后取消",
+    "expiresOn": "有效期至",
+    "aiUsage": "AI 分析次数",
+    "aiUsageOf": "/",
+    "limitReached": "本月免费 AI 分析次数已用完",
+    "upgradeToUnlock": "升级到 Pro 解锁无限 AI 分析",
+    "proFeature": "Pro 专属功能",
+    "upgradeForPatterns": "升级到 Pro 解锁 AI 模式分析",
+    "paymentSuccess": "订阅成功！",
+    "paymentCanceled": "支付已取消"
   }
 }

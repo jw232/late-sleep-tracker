@@ -23,8 +23,8 @@ export function StreakCard({ streak, t }: StreakCardProps) {
   return (
     <Card>
       <CardContent className="flex items-center gap-4 py-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
-          <Flame className="h-6 w-6 text-orange-500" />
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-400/10">
+          <Flame className="h-6 w-6 text-amber-400" />
         </div>
         <div>
           <div className="flex items-baseline gap-1">

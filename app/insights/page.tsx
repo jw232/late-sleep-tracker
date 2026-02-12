@@ -14,6 +14,7 @@ interface InsightsData {
   trend: { date: string; time: string }[];
   patternAnalysis: PatternAnalysis | null;
   totalRecords: number;
+  isPro: boolean;
 }
 
 export default function InsightsPage() {
@@ -21,15 +22,17 @@ export default function InsightsPage() {
   const [days, setDays] = useState(7);
   const [data, setData] = useState<InsightsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const fetchInsights = useCallback(async () => {
     setLoading(true);
+    setError(false);
     try {
       const res = await fetch(`/api/insights?days=${days}`);
       const json = await res.json();
       setData(json);
     } catch {
-      // ignore
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -40,6 +43,7 @@ export default function InsightsPage() {
   }, [fetchInsights]);
 
   return (
+    <div className="mx-auto max-w-2xl px-4 py-6">
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{t.insights.title}</h1>
 
@@ -63,6 +67,8 @@ export default function InsightsPage() {
 
       {loading ? (
         <p className="text-center text-muted-foreground py-8">Loading...</p>
+      ) : error ? (
+        <p className="text-center text-red-400 font-medium py-8">{t.insights.error}</p>
       ) : data ? (
         <div className="space-y-6">
           <ReasonChart reasons={data.topReasons} title={t.insights.topReasons} />
@@ -75,15 +81,22 @@ export default function InsightsPage() {
 
           {data.patternAnalysis ? (
             <AISummary analysis={data.patternAnalysis} t={t.insights} />
-          ) : (
-            data.totalRecords < 3 && (
-              <p className="text-center text-muted-foreground py-4">
-                {t.insights.needMoreRecords}
-              </p>
-            )
-          )}
+          ) : data.totalRecords >= 3 && !data.isPro ? (
+            <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-6 text-center">
+              <p className="font-medium text-amber-300">{t.billing.proFeature}</p>
+              <p className="text-sm text-amber-400/70 mt-1">{t.billing.upgradeForPatterns}</p>
+              <a href="/billing" className="inline-block mt-3 text-sm font-medium text-primary underline">
+                {t.billing.upgrade}
+              </a>
+            </div>
+          ) : data.totalRecords < 3 ? (
+            <p className="text-center text-muted-foreground py-4">
+              {t.insights.needMoreRecords}
+            </p>
+          ) : null}
         </div>
       ) : null}
+    </div>
     </div>
   );
 }

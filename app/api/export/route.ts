@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/server';
 
 // GET: Export data as CSV or JSON
 export async function GET(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const format = searchParams.get('format') || 'json';
 
   const { data, error } = await supabase
     .from('sleep_records')
     .select('*')
+    .eq('user_id', user.id)
     .order('record_date', { ascending: false });
 
   if (error) {
@@ -39,10 +46,16 @@ export async function GET(request: NextRequest) {
 
 // DELETE: Clear all data
 export async function DELETE() {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { error } = await supabase
     .from('sleep_records')
     .delete()
-    .neq('id', '00000000-0000-0000-0000-000000000000'); // delete all rows
+    .eq('user_id', user.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

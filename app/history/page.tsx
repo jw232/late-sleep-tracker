@@ -13,13 +13,19 @@ export default function HistoryPage() {
   const [records, setRecords] = useState<SleepRecord[]>([]);
   const [days, setDays] = useState(7);
   const [search, setSearch] = useState('');
+  const [error, setError] = useState(false);
 
   const fetchRecords = useCallback(async (searchTerm?: string) => {
-    const params = new URLSearchParams({ days: days.toString() });
-    if (searchTerm) params.set('search', searchTerm);
-    const res = await fetch(`/api/records?${params}`);
-    const data = await res.json();
-    if (Array.isArray(data)) setRecords(data);
+    try {
+      setError(false);
+      const params = new URLSearchParams({ days: days.toString() });
+      if (searchTerm) params.set('search', searchTerm);
+      const res = await fetch(`/api/records?${params}`);
+      const data = await res.json();
+      if (Array.isArray(data)) setRecords(data);
+    } catch {
+      setError(true);
+    }
   }, [days]);
 
   useEffect(() => {
@@ -35,20 +41,31 @@ export default function HistoryPage() {
   };
 
   const handleEdit = async (id: string, data: { record_date: string; sleep_time: string; reason_text: string }) => {
-    await fetch('/api/records', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, ...data }),
-    });
-    fetchRecords(search);
+    try {
+      setError(false);
+      await fetch('/api/records', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...data }),
+      });
+      fetchRecords(search);
+    } catch {
+      setError(true);
+    }
   };
 
   const handleDelete = async (id: string) => {
-    await fetch(`/api/records?id=${id}`, { method: 'DELETE' });
-    fetchRecords(search);
+    try {
+      setError(false);
+      await fetch(`/api/records?id=${id}`, { method: 'DELETE' });
+      fetchRecords(search);
+    } catch {
+      setError(true);
+    }
   };
 
   return (
+    <div className="mx-auto max-w-2xl px-4 py-6">
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{t.history.title}</h1>
 
@@ -83,6 +100,10 @@ export default function HistoryPage() {
         </Button>
       </div>
 
+      {error && (
+        <p className="text-sm text-red-400 font-medium">{t.history.error}</p>
+      )}
+
       {/* Record list */}
       <RecordList
         records={records}
@@ -91,6 +112,7 @@ export default function HistoryPage() {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+    </div>
     </div>
   );
 }

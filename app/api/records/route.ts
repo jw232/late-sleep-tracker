@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/server';
 
 // GET: Fetch records with optional filters
 export async function GET(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const days = parseInt(searchParams.get('days') || '30');
   const search = searchParams.get('search') || '';
@@ -13,6 +19,7 @@ export async function GET(request: NextRequest) {
   let query = supabase
     .from('sleep_records')
     .select('*')
+    .eq('user_id', user.id)
     .gte('record_date', fromDate.toISOString().split('T')[0])
     .order('record_date', { ascending: false });
 
@@ -31,6 +38,12 @@ export async function GET(request: NextRequest) {
 
 // POST: Create a new record
 export async function POST(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const body = await request.json();
 
   const { data, error } = await supabase
@@ -41,6 +54,7 @@ export async function POST(request: NextRequest) {
       reason_text: body.reason_text,
       mood_score: body.mood_score || null,
       analysis: body.analysis || null,
+      user_id: user.id,
     })
     .select()
     .single();
@@ -54,6 +68,12 @@ export async function POST(request: NextRequest) {
 
 // PUT: Update a record
 export async function PUT(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const body = await request.json();
   const { id, ...updates } = body;
 
@@ -61,6 +81,7 @@ export async function PUT(request: NextRequest) {
     .from('sleep_records')
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('id', id)
+    .eq('user_id', user.id)
     .select()
     .single();
 
@@ -73,6 +94,12 @@ export async function PUT(request: NextRequest) {
 
 // DELETE: Delete a record
 export async function DELETE(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
@@ -83,7 +110,8 @@ export async function DELETE(request: NextRequest) {
   const { error } = await supabase
     .from('sleep_records')
     .delete()
-    .eq('id', id);
+    .eq('id', id)
+    .eq('user_id', user.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

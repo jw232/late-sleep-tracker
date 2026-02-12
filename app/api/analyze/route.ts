@@ -1,7 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 import { openai } from '@/lib/openai';
+import { getSubscriptionStatus } from '@/lib/subscription';
 
 export async function POST(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Check AI usage limit
+  const status = await getSubscriptionStatus(supabase, user.id);
+  if (status.aiLimitReached) {
+    return NextResponse.json({ error: 'limit_reached' }, { status: 403 });
+  }
+
   const { reason_text, sleep_time } = await request.json();
 
   try {
@@ -33,6 +47,12 @@ Keep responses concise. Respond in the same language as the user's input.`,
 
     const content = response.choices[0].message.content || '{}';
     const analysis = JSON.parse(content);
+
+    // Record AI usage
+    await supabase.from('ai_usage').insert({
+      user_id: user.id,
+      endpoint: 'analyze',
+    });
 
     return NextResponse.json(analysis);
   } catch (error) {

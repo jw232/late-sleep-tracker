@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk, DM_Sans } from "next/font/google";
 import { Navigation } from "@/components/navigation";
+import { Starfield } from "@/components/landing/starfield";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +11,16 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
+  subsets: ["latin"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
@@ -26,12 +37,13 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${dmSans.variable} antialiased`}
       >
-        <Navigation />
-        <main className="mx-auto max-w-2xl px-4 py-6">
+        <Starfield />
+        <div className="relative z-10">
+          <Navigation />
           {children}
-        </main>
+        </div>
       </body>
     </html>
   );

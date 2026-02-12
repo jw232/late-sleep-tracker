@@ -3,6 +3,7 @@
     "record": "Record",
     "history": "History",
     "insights": "Insights",
+    "billing": "Billing",
     "settings": "Settings"
   },
   "record": {
@@ -16,6 +17,7 @@
     "analyzing": "AI Analyzing...",
     "saving": "Saving...",
     "saved": "Saved",
+    "error": "Submit failed, please try again",
     "streak": "Streak",
     "streakDays": "days",
     "streakMessages": [
@@ -41,6 +43,7 @@
     "last7Days": "Last 7 Days",
     "last30Days": "Last 30 Days",
     "noRecords": "No records found",
+    "error": "Failed to load, please try again",
     "edit": "Edit",
     "delete": "Delete",
     "confirmDelete": "Are you sure you want to delete this record?",
@@ -69,7 +72,18 @@
     "worsening": "Worsening",
     "stable": "Stable",
     "advice": "Actionable Advice",
-    "needMoreRecords": "Need at least 3 records for AI analysis"
+    "needMoreRecords": "Need at least 3 records for AI analysis",
+    "error": "Failed to load, please try again"
+  },
+  "login": {
+    "title": "Sleep Tracker",
+    "subtitle": "Track your late nights, discover patterns with AI",
+    "google": "Continue with Google",
+    "or": "or",
+    "emailPlaceholder": "Enter your email",
+    "sendLink": "Send login link",
+    "checkEmail": "Check your email for the login link",
+    "error": "Login failed, please try again"
   },
   "settings": {
     "title": "Settings",
@@ -92,6 +106,60 @@
     "about": "About",
     "version": "Version",
     "description": "An app to help you track and improve your late sleep habits",
-    "totalRecords": "Total Records"
+    "totalRecords": "Total Records",
+    "signOut": "Sign Out"
+  },
+  "landing": {
+    "heroTitle": "Understand Your Late Nights",
+    "heroSubtitle": "AI-powered sleep tracking that helps you discover patterns, build better habits, and finally get to bed on time.",
+    "heroCTA": "Start Tracking Free",
+    "featuresTitle": "Everything You Need",
+    "feature1Title": "AI Analysis",
+    "feature1Desc": "Get personalized insights into why you stay up late, powered by advanced AI.",
+    "feature2Title": "Streak Tracking",
+    "feature2Desc": "Build consistency with daily recording streaks and motivational milestones.",
+    "feature3Title": "Pattern Insights",
+    "feature3Desc": "Discover hidden patterns in your sleep behavior across days and weeks.",
+    "feature4Title": "Data Export",
+    "feature4Desc": "Export your data anytime in CSV or JSON format. Your data, your control.",
+    "howTitle": "How It Works",
+    "step1Title": "Record",
+    "step1Desc": "Log your sleep time and reason each night in seconds.",
+    "step2Title": "Analyze",
+    "step2Desc": "AI identifies your top reasons and suggests improvements.",
+    "step3Title": "Improve",
+    "step3Desc": "Track your progress and build healthier sleep habits over time.",
+    "pricingTitle": "Simple Pricing",
+    "free": "Free",
+    "freePriceLabel": "$0",
+    "freeFeatures": ["5 AI analyses per month", "Daily recording", "Basic insights", "Data export"],
+    "pro": "Pro",
+    "proPriceLabel": "$3.99/mo",
+    "proFeatures": ["Unlimited AI analyses", "Advanced pattern analysis", "Weekday insights", "Priority support"],
+    "finalCTATitle": "Ready to Sleep Better?",
+    "finalCTASubtitle": "Join and start understanding your late-night habits tonight.",
+    "finalCTAButton": "Get Started Free",
+    "footer": "Sleep Tracker"
+  },
+  "billing": {
+    "subscription": "Subscription",
+    "freePlan": "Free",
+    "proPlan": "Pro",
+    "currentPlan": "Current Plan",
+    "monthly": "$3.99/month",
+    "yearly": "$39.99/year",
+    "yearlySave": "Save 16%",
+    "upgrade": "Upgrade to Pro",
+    "manageSubscription": "Manage Subscription",
+    "cancelAtEnd": "Will cancel at period end",
+    "expiresOn": "Expires on",
+    "aiUsage": "AI Analysis",
+    "aiUsageOf": "/",
+    "limitReached": "Free AI analysis limit reached this month",
+    "upgradeToUnlock": "Upgrade to Pro for unlimited AI analysis",
+    "proFeature": "Pro Feature",
+    "upgradeForPatterns": "Upgrade to Pro to unlock AI pattern analysis",
+    "paymentSuccess": "Subscription successful!",
+    "paymentCanceled": "Payment canceled"
   }
 }

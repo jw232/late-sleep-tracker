@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/server';
 import { openai } from '@/lib/openai';
+import { getSubscriptionStatus } from '@/lib/subscription';
 import type { SleepRecord } from '@/types';
 
 export async function GET(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const days = parseInt(searchParams.get('days') || '30');
 
@@ -13,6 +20,7 @@ export async function GET(request: NextRequest) {
   const { data: records, error } = await supabase
     .from('sleep_records')
     .select('*')
+    .eq('user_id', user.id)
     .gte('record_date', fromDate.toISOString().split('T')[0])
     .order('record_date', { ascending: true });
 
@@ -74,9 +82,10 @@ export async function GET(request: NextRequest) {
     time: r.sleep_time,
   }));
 
-  // AI Pattern Analysis (only if 3+ records)
+  // AI Pattern Analysis (only if 3+ records AND Pro user)
+  const subStatus = await getSubscriptionStatus(supabase, user.id);
   let patternAnalysis = null;
-  if (typedRecords.length >= 3) {
+  if (typedRecords.length >= 3 && subStatus.isPro) {
     try {
       const summary = typedRecords.map((r) =>
         `${r.record_date} ${r.sleep_time} - ${r.reason_text}`
@@ -119,5 +128,6 @@ Respond in the same language as the user's input.`,
     trend: last14,
     patternAnalysis,
     totalRecords: typedRecords.length,
+    isPro: subStatus.isPro,
   });
 }
