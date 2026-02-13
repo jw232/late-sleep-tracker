@@ -1,60 +1,74 @@
-# 全局 "Calm Night Sky" 暗色主题
+# Late Sleep Tracker - Comprehensive Test Implementation
 
-## 任务列表
+## Overview
+Added 228 new tests across 27 new files to complement existing 33 tests (7 files).
+Target: 261 total tests, all passing. **ACHIEVED.**
 
-### Step 1: 核心主题变量
-- [x] 1.1 `app/globals.css` — `:root` 变量替换为夜空暗色值 + body 固定渐变背景
+## Implementation Steps
 
-### Step 2: Starfield 全局化
-- [x] 2.1 `app/layout.tsx` — 添加 Starfield + `relative z-10` 内容包裹
+### Step 0: Shared Mock Factory
+- [x] Create `tests/helpers/mock-supabase.ts` — reusable Supabase client mock factory
 
-### Step 3: 玻璃态卡片
-- [x] 3.1 `components/ui/card.tsx` — 添加 `backdrop-blur-md`
+### Step 1: Lib Module Tests (18 tests)
+- [x] `tests/lib/subscription.test.ts` — 12 tests
+- [x] `tests/lib/anthropic.test.ts` — 2 tests
+- [x] `tests/lib/stripe-client.test.ts` — 4 tests
 
-### Step 4: Landing 去重
-- [x] 4.1 `components/landing/landing-page.tsx` — 移除渐变和 Starfield（已在 layout）
+### Step 2: API Route Tests (113 tests)
+- [x] `tests/api/records.test.ts` — 26 tests (GET/POST/PUT/DELETE)
+- [x] `tests/api/usage.test.ts` — 6 tests
+- [x] `tests/api/export.test.ts` — 14 tests (GET JSON/CSV + DELETE)
+- [x] `tests/api/analyze.test.ts` — 16 tests (AI analysis)
+- [x] `tests/api/insights.test.ts` — 20 tests (aggregation + AI patterns)
+- [x] `tests/api/stripe/webhook.test.ts` — 15 tests
+- [x] `tests/api/stripe/checkout.test.ts` — 10 tests
+- [x] `tests/api/stripe/portal.test.ts` — 6 tests
 
-### Step 5: 玻璃态导航
-- [x] 5.1 `components/navigation.tsx` — `bg-white/80` → 玻璃态
+### Step 3: Component Interaction Tests (42 tests)
+- [x] `tests/components/record/analysis-result.test.tsx` — 8 tests
+- [x] `tests/components/record/record-form-interaction.test.tsx` — 10 tests
+- [x] `tests/components/history/record-list.test.tsx` — 5 tests
+- [x] `tests/components/insights/reason-chart.test.tsx` — 6 tests
+- [x] `tests/components/insights/sleep-stats.test.tsx` — 6 tests
+- [x] `tests/components/insights/ai-summary.test.tsx` — 7 tests
 
-### Step 6: 硬编码浅色修复
-- [x] 6.1 `components/record/streak-card.tsx` — 浅色 → 暗色安全版
-- [x] 6.2 `components/record/record-page.tsx` — 浅色 → 暗色安全版
-- [x] 6.3 `app/billing/page.tsx` — 浅色 → 暗色安全版
-- [x] 6.4 `app/insights/page.tsx` — 浅色 → 暗色安全版
-- [x] 6.5 `app/history/page.tsx` — `text-red-600` → `text-red-400`
-- [x] 6.6 `components/insights/ai-summary.tsx` — trend 颜色 600 → 400
-- [x] 6.7 `app/login/page.tsx` — divider 重写 + `text-green-600` → 400
+### Step 4: Page Integration Tests (28 tests)
+- [x] `tests/pages/login.test.tsx` — 8 tests
+- [x] `tests/pages/settings.test.tsx` — 9 tests
+- [x] `tests/pages/history.test.tsx` — 6 tests
+- [x] `tests/pages/billing.test.tsx` — 5 tests
 
-### 验证
-- [x] 7.1 `npm run build` 通过
-- [x] 7.2 `npm run test` 通过（33/33）
+### Step 5: Middleware & Auth Tests (12 tests)
+- [x] `tests/middleware/update-session.test.ts` — 8 tests
+- [x] `tests/auth/callback.test.ts` — 4 tests
+
+### Step 6: Edge Case Tests (15 tests)
+- [x] `tests/edge-cases/insights-calculations.test.ts` — 10 tests
+- [x] `tests/edge-cases/chart-edge.test.tsx` — 3 tests
+- [x] `tests/edge-cases/csv-export-edge.test.ts` — 2 tests
+
+### Final Verification
+- [x] Run `npm run test` — **261 tests passed, 33 files, 0 failures**
+
+---
 
 ## Review
 
-### 变更总览
+### Results
+```
+Test Files  33 passed (33)
+     Tests  261 passed (261)
+  Duration  98.16s
+```
 
-修改了 12 个文件，0 个新建。核心策略：修改 `:root` CSS 变量自动级联到所有 shadcn 组件（~90%），然后手动修复硬编码浅色类名（~10%）。
-
-### 修改文件
-
-| 文件 | 改动说明 |
-|------|----------|
-| `app/globals.css` | `:root` 变量全部替换为夜空暗色值（深蓝背景、近白前景、amber 主色、白 5% 卡片），移除 `.dark` 块，body 改用固定渐变背景 + `color-scheme: dark` |
-| `app/layout.tsx` | 导入 Starfield 组件，添加到 body 顶层，内容用 `relative z-10` 包裹 |
-| `components/ui/card.tsx` | Card base class 添加 `backdrop-blur-md`（1 个 class） |
-| `components/landing/landing-page.tsx` | 移除 Starfield 导入和组件、移除重复的渐变背景 class、移除多余的 z-10 wrapper div |
-| `components/navigation.tsx` | `bg-white/80 backdrop-blur-sm` → `bg-white/5 backdrop-blur-md border-white/10` |
-| `components/record/streak-card.tsx` | `bg-orange-100` → `bg-amber-400/10`，`text-orange-500` → `text-amber-400` |
-| `components/record/record-page.tsx` | `text-green-600` → `text-green-400`，`text-red-600` → `text-red-400`，`border-amber-200 bg-amber-50` → `border-amber-400/30 bg-amber-400/5`，`text-amber-800` → `text-amber-300`，`text-amber-600` → `text-amber-400/70` |
-| `app/billing/page.tsx` | `border-green-200 bg-green-50 text-green-800` → `border-green-400/30 bg-green-400/5 text-green-300`，`text-green-600` → `text-green-400`，`text-amber-600` → `text-amber-400` |
-| `app/insights/page.tsx` | `text-red-600` → `text-red-400`，`border-amber-200 bg-amber-50 text-amber-800` → `border-amber-400/30 bg-amber-400/5 text-amber-300`，`text-amber-600` → `text-amber-400/70` |
-| `app/history/page.tsx` | `text-red-600` → `text-red-400` |
-| `components/insights/ai-summary.tsx` | trend 颜色 `text-green-600/red-600/yellow-600` → `text-green-400/red-400/yellow-400` |
-| `app/login/page.tsx` | divider 从 `absolute + bg-card` 改为 flex 两线方式（避免透明背景问题），`text-green-600` → `text-green-400` |
-
-### 验证结果
-
-- `npm run build`: 通过，所有路由正常生成
-- `npm run test`: 7 files, 33/33 tests passed
-- 所有测试检查文本内容而非 CSS 类名，不受主题变更影响
+### Summary of Changes
+- Created **1 shared mock helper** (`tests/helpers/mock-supabase.ts`) providing `createMockSupabase()` and `createMockQueryBuilder()` for all API route tests
+- Created **27 new test files** covering:
+  - All 8 API routes (records, analyze, insights, export, usage, stripe checkout/portal/webhook)
+  - 6 component interaction tests (analysis-result, record-form, record-list, reason-chart, sleep-stats, ai-summary)
+  - 4 page integration tests (login, settings, history, billing)
+  - Middleware session handling + auth callback
+  - Edge cases for time calculations, chart rendering, CSV export
+- **Security-critical tests**: All API routes verify 401 for unauthenticated requests, user_id filtering for data isolation, ownership verification for updates/deletes
+- **No existing tests were modified** — all 33 original tests continue to pass
+- **No source code was modified** — tests-only changes

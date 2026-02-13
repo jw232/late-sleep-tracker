@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { openai } from '@/lib/openai';
+import { anthropic } from '@/lib/anthropic';
 import { getSubscriptionStatus } from '@/lib/subscription';
 import type { SleepRecord } from '@/types';
 
@@ -91,12 +91,9 @@ export async function GET(request: NextRequest) {
         `${r.record_date} ${r.sleep_time} - ${r.reason_text}`
       ).join('\n');
 
-      const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a sleep pattern analyst. Analyze the user's sleep records and identify patterns.
+      const response = await anthropic.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        system: `You are a sleep pattern analyst. Analyze the user's sleep records and identify patterns.
 Respond ONLY with valid JSON in this exact format:
 {
   "patterns": [{"name": "pattern name", "evidence": "evidence description", "frequency": "how often"}],
@@ -105,20 +102,22 @@ Respond ONLY with valid JSON in this exact format:
   "actionable_advice": ["advice 1", "advice 2", "advice 3"]
 }
 Respond in the same language as the user's input.`,
-          },
+        messages: [
           {
             role: 'user',
             content: `Here are my sleep records:\n${summary}`,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 800,
+        max_tokens: 1024,
       });
 
-      const content = response.choices[0].message.content || '{}';
+      const textBlock = response.content.find(b => b.type === 'text');
+      const raw = textBlock && 'text' in textBlock ? textBlock.text : '{}';
+      const content = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '');
       patternAnalysis = JSON.parse(content);
     } catch (e) {
-      console.error('Pattern analysis error:', e);
+      const detail = e instanceof Error ? e.message : String(e);
+      console.error('Pattern analysis error:', detail);
     }
   }
 

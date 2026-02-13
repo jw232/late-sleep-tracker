@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url);
-  const days = parseInt(searchParams.get('days') || '30');
+  const days = parseInt(searchParams.get('days') || '30') || 30;
   const search = searchParams.get('search') || '';
 
   const fromDate = new Date();

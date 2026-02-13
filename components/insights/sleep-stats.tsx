@@ -56,7 +56,7 @@ export function SleepStats({ stats, trend, t }: SleepStatsProps) {
         {trend.length > 0 && (
           <div>
             <h4 className="text-sm font-medium mb-3">{t.trend}</h4>
-            <div className="flex items-end gap-1 h-32 relative">
+            <div className="flex gap-1 h-32 relative">
               {trend.map((d, i) => {
                 const height = ((trendMinutes[i] - minMin) / range) * 100;
                 return (

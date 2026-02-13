@@ -27,7 +27,7 @@ export function LandingNav() {
             href="/login"
             className="rounded-lg bg-white/10 px-4 py-1.5 text-sm font-medium text-white hover:bg-white/20 transition-colors border border-white/20"
           >
-            {t.login.title}
+            {t.landing.loginButton}
           </Link>
         </div>
       </div>

@@ -64,6 +64,8 @@ export default function RecordPage() {
       } else if (analyzeRes.ok) {
         analysisData = await analyzeRes.json();
         setAnalysis(analysisData);
+      } else {
+        console.error('Analysis failed:', analyzeRes.status);
       }
 
       // Step 2: Auto-save (with or without analysis)

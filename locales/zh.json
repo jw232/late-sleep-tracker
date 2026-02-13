@@ -131,15 +131,16 @@
     "step3Desc": "追踪进展，逐步建立更健康的睡眠习惯。",
     "pricingTitle": "简单定价",
     "free": "免费版",
-    "freePriceLabel": "¥0",
+    "freePriceLabel": "$0",
     "freeFeatures": ["每月 5 次 AI 分析", "每日记录", "基础洞察", "数据导出"],
     "pro": "Pro",
-    "proPriceLabel": "¥29.9/月",
+    "proPriceLabel": "$3.99/月",
     "proFeatures": ["无限 AI 分析", "高级模式分析", "星期维度洞察", "优先支持"],
     "finalCTATitle": "准备好睡个好觉了吗？",
     "finalCTASubtitle": "加入我们，今晚就开始理解你的晚睡习惯。",
     "finalCTAButton": "免费开始",
-    "footer": "晚睡记录"
+    "footer": "晚睡记录",
+    "loginButton": "登录"
   },
   "billing": {
     "subscription": "订阅",

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { openai } from '@/lib/openai';
+import { anthropic } from '@/lib/anthropic';
 import { getSubscriptionStatus } from '@/lib/subscription';
 
 export async function POST(request: NextRequest) {
@@ -19,12 +19,9 @@ export async function POST(request: NextRequest) {
   const { reason_text, sleep_time } = await request.json();
 
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: `You are a sleep habit analyst. Analyze the user's late sleep reason and provide structured feedback.
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5-20250929',
+      system: `You are a sleep habit analyst. Analyze the user's late sleep reason and provide structured feedback.
 Respond ONLY with valid JSON in this exact format:
 {
   "top_reasons": [{"reason": "main reason", "confidence": 85}],
@@ -35,17 +32,18 @@ Respond ONLY with valid JSON in this exact format:
 - suggestions: 2-4 actionable improvement suggestions
 - tags: 2-4 keyword tags in English
 Keep responses concise. Respond in the same language as the user's input.`,
-        },
+      messages: [
         {
           role: 'user',
           content: `Sleep time: ${sleep_time}\nReason: ${reason_text}`,
         },
       ],
-      temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 1024,
     });
 
-    const content = response.choices[0].message.content || '{}';
+    const textBlock = response.content.find(b => b.type === 'text');
+    const raw = textBlock && 'text' in textBlock ? textBlock.text : '{}';
+    const content = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '');
     const analysis = JSON.parse(content);
 
     // Record AI usage
@@ -55,10 +53,13 @@ Keep responses concise. Respond in the same language as the user's input.`,
     });
 
     return NextResponse.json(analysis);
-  } catch (error) {
-    console.error('Analysis error:', error);
+  } catch (error: unknown) {
+    const status = (error as { status?: number }).status;
+    const body = (error as { error?: unknown }).error;
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error('Analysis error:', { status, body, detail });
     return NextResponse.json(
-      { error: 'Analysis failed' },
+      { error: 'Analysis failed', detail },
       { status: 500 }
     );
   }

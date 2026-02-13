@@ -139,7 +139,8 @@
     "finalCTATitle": "Ready to Sleep Better?",
     "finalCTASubtitle": "Join and start understanding your late-night habits tonight.",
     "finalCTAButton": "Get Started Free",
-    "footer": "Sleep Tracker"
+    "footer": "Sleep Tracker",
+    "loginButton": "Login"
   },
   "billing": {
     "subscription": "Subscription",

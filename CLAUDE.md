@@ -22,7 +22,7 @@
 - **前端**: React 19.2.3 + TypeScript
 - **认证**: Supabase Auth (Google OAuth + Magic Link) via @supabase/ssr
 - **数据库**: Supabase (PostgreSQL) via @supabase/supabase-js ^2.95.3
-- **AI**: OpenAI API (GPT-4o-mini) via openai ^6.18.0
+- **AI**: Anthropic Claude API (claude-opus-4-6) via @anthropic-ai/sdk
 - **计费**: Stripe ^20.3.1（Checkout + Customer Portal + Webhooks）
 - **UI**: shadcn/ui (Radix UI ^1.4.3) + Tailwind CSS 4 + Lucide React icons
 - **动画**: framer-motion ^12.34.0（落地页滚动动画）
@@ -152,7 +152,7 @@
 │   ├── supabase/server.ts      # Supabase 服务端客户端（cookies）
 │   ├── supabase/middleware.ts   # Supabase middleware 辅助（session 刷新）
 │   ├── supabase/admin.ts       # Supabase Admin 客户端（service_role_key，用于 webhook）
-│   ├── openai.ts               # OpenAI客户端
+│   ├── anthropic.ts            # Anthropic Claude客户端
 │   ├── streak.ts               # Streak 计算纯函数（从组件提取）
 │   ├── stripe.ts               # Stripe 客户端实例
 │   ├── subscription.ts         # 订阅状态查询（getSubscriptionStatus）
@@ -166,18 +166,53 @@
 ├── vitest.config.ts            # 测试配置（jsdom环境，@/路径别名）
 └── tests/
     ├── setup.ts                # 测试初始化（@testing-library/jest-dom）
+    ├── helpers/
+    │   └── mock-supabase.ts    # 共享 Supabase Mock 工厂（createMockSupabase, createMockQueryBuilder）
+    ├── api/
+    │   ├── records.test.ts     # 记录 CRUD 测试（26 用例）
+    │   ├── analyze.test.ts     # AI 分析测试（16 用例）
+    │   ├── insights.test.ts    # 洞察聚合测试（20 用例）
+    │   ├── export.test.ts      # 导出/清空测试（14 用例）
+    │   ├── usage.test.ts       # 订阅状态测试（6 用例）
+    │   └── stripe/
+    │       ├── checkout.test.ts  # Stripe Checkout 测试（10 用例）
+    │       ├── portal.test.ts    # Stripe Portal 测试（6 用例）
+    │       └── webhook.test.ts   # Stripe Webhook 测试（15 用例）
     ├── lib/
-    │   ├── streak.test.ts      # Streak 计算逻辑测试（9 用例）
-    │   └── utils.test.ts       # cn() 工具函数测试（3 用例）
+    │   ├── streak.test.ts        # Streak 计算逻辑测试（9 用例）
+    │   ├── utils.test.ts         # cn() 工具函数测试（3 用例）
+    │   ├── subscription.test.ts  # 订阅状态查询测试（12 用例）
+    │   ├── anthropic.test.ts     # Anthropic 客户端测试（2 用例）
+    │   └── stripe-client.test.ts # Stripe 客户端测试（4 用例）
     ├── hooks/
     │   └── use-locale.test.ts  # 国际化 hook 测试（5 用例）
-    └── components/
-        ├── navigation.test.tsx     # 导航栏测试（2 用例）
-        ├── record/
-        │   ├── streak-card.test.tsx # Streak 卡片测试（4 用例）
-        │   └── record-form.test.tsx # 记录表单测试（5 用例）
-        └── history/
-            └── record-card.test.tsx # 记录卡片测试（5 用例）
+    ├── components/
+    │   ├── navigation.test.tsx     # 导航栏测试（2 用例）
+    │   ├── record/
+    │   │   ├── streak-card.test.tsx           # Streak 卡片测试（4 用例）
+    │   │   ├── record-form.test.tsx           # 记录表单渲染测试（5 用例）
+    │   │   ├── record-form-interaction.test.tsx # 记录表单交互测试（10 用例）
+    │   │   └── analysis-result.test.tsx       # AI 结果展示测试（8 用例）
+    │   ├── history/
+    │   │   ├── record-card.test.tsx  # 记录卡片测试（5 用例）
+    │   │   └── record-list.test.tsx  # 记录列表测试（5 用例）
+    │   └── insights/
+    │       ├── reason-chart.test.tsx # 原因图表测试（6 用例）
+    │       ├── sleep-stats.test.tsx  # 时间统计测试（6 用例）
+    │       └── ai-summary.test.tsx   # AI 摘要测试（7 用例）
+    ├── pages/
+    │   ├── login.test.tsx      # 登录页测试（8 用例）
+    │   ├── settings.test.tsx   # 设置页测试（9 用例）
+    │   ├── history.test.tsx    # 历史页测试（6 用例）
+    │   └── billing.test.tsx    # 计费页测试（5 用例）
+    ├── middleware/
+    │   └── update-session.test.ts # 中间件路由保护测试（8 用例）
+    ├── auth/
+    │   └── callback.test.ts    # OAuth 回调测试（4 用例）
+    └── edge-cases/
+        ├── insights-calculations.test.ts # 时间计算边界测试（10 用例）
+        ├── chart-edge.test.tsx           # 图表边界测试（3 用例）
+        └── csv-export-edge.test.ts       # CSV 导出边界测试（2 用例）
 ```
 
 ## 类型定义
@@ -255,8 +290,8 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
+# Anthropic Claude
+ANTHROPIC_API_KEY=your_anthropic_api_key
 
 # Stripe
 STRIPE_SECRET_KEY=sk_test_...
@@ -281,20 +316,26 @@ npm run test:watch # 监听模式测试（vitest）
 - **框架**: Vitest + @testing-library/react + @testing-library/jest-dom
 - **环境**: jsdom (via vitest.config.ts)
 - **路径别名**: `@/` 映射到项目根目录
-- **状态**: 33 个测试用例，7 个文件全部通过
+- **Mock 模式**: 共享 `tests/helpers/mock-supabase.ts` 提供 `createMockSupabase()` 和 `createMockQueryBuilder()`，模拟 Supabase 的 thenable 链式查询
+- **注意**: 项目未安装 `@testing-library/user-event`，组件交互测试使用 `fireEvent`
+- **状态**: 261 个测试用例，33 个文件全部通过
 
-| 测试文件 | 用例数 | 状态 |
-|---------|--------|------|
-| `lib/streak.test.ts` | 9 | PASS |
-| `lib/utils.test.ts` | 3 | PASS |
-| `hooks/use-locale.test.ts` | 5 | PASS |
-| `components/record/streak-card.test.tsx` | 4 | PASS |
-| `components/record/record-form.test.tsx` | 5 | PASS |
-| `components/history/record-card.test.tsx` | 5 | PASS |
-| `components/navigation.test.tsx` | 2 | PASS |
+| 类别 | 文件数 | 用例数 | 说明 |
+|------|--------|--------|------|
+| API 路由测试 | 8 | 113 | records, analyze, insights, export, usage, stripe checkout/portal/webhook |
+| 组件交互测试 | 6 | 42 | analysis-result, record-form-interaction, record-list, reason-chart, sleep-stats, ai-summary |
+| 页面集成测试 | 4 | 28 | login, settings, history, billing |
+| Lib 模块测试 | 5 | 30 | streak, utils, subscription, anthropic, stripe-client |
+| 中间件/认证测试 | 2 | 12 | update-session, auth callback |
+| 组件渲染测试 | 5 | 21 | navigation, streak-card, record-form, record-card, use-locale |
+| 边界条件测试 | 3 | 15 | insights-calculations, chart-edge, csv-export-edge |
+| **合计** | **33** | **261** | |
 
-### 待补充测试（来自 prd-tests.md）
-- API 路由测试（records, analyze）— 需要 mock Supabase + OpenAI，优先级最低
+### 安全测试覆盖
+- 所有 8 个 API 路由验证 401（未认证）
+- 所有数据查询验证 `user_id` 过滤（数据隔离）
+- PUT/DELETE 验证同时匹配 `id` + `user_id`（所有权验证）
+- POST 验证 `user_id` 取自 session 而非请求体（防篡改）
 
 ## 认证架构
 
@@ -307,7 +348,9 @@ npm run test:watch # 监听模式测试（vitest）
 ### 手动配置项
 
 1. **Google OAuth**: Google Cloud Console 创建 OAuth Client → Supabase Dashboard → Providers → Google 填入 Client ID/Secret
-2. **Redirect URL**: Supabase Dashboard → Authentication → URL Configuration 添加 `http://localhost:3000/auth/callback`（生产环境替换域名）
+2. **Redirect URL**: Supabase Dashboard → Authentication → URL Configuration:
+   - **Site URL**: `https://late-sleep-tracker.vercel.app`
+   - **Redirect URLs**: `http://localhost:3000/**`（本地开发）+ `https://late-sleep-tracker.vercel.app/**`（生产环境）
 3. **Magic Link**: Supabase 默认启用 Email provider
 
 ## 项目状态
@@ -318,7 +361,7 @@ npm run test:watch # 监听模式测试（vitest）
 |------|------|------|
 | prd-improvements.md（3 项优化） | ✅ 完成 | 时间按钮网格 + Streak 激励 + AI 模式分析 |
 | prd-auth.md（认证系统） | ✅ 完成 | Google OAuth + Magic Link + RLS + 数据隔离 |
-| prd-tests.md（单元测试） | ✅ 完成 | 33/33 用例通过，7/7 文件通过，API 测试未做 |
+| prd-tests.md（单元测试） | ✅ 完成 | 261/261 用例通过，33/33 文件通过（含全部 API 路由测试） |
 | Landing Page（营销落地页） | ✅ 完成 | Hero + Features + Pricing + Starfield 动画 |
 | Stripe 订阅计费 | ✅ 完成 | Checkout + Portal + Webhooks + Free/Pro 用量限制 |
 | "Calm Night Sky" 暗色主题 | ✅ 完成 | oklch 变量 + 星空渐变背景 + 玻璃拟态卡片 |
@@ -327,12 +370,30 @@ npm run test:watch # 监听模式测试（vitest）
 - 无
 
 ### 代码指标
-- ~3,440 行 TypeScript/TSX
+- ~3,440 行 TypeScript/TSX（源码）
 - 21 个组件（13 业务 + 8 shadcn UI）
 - 8 个 API 路由，6 个页面
-- 33 个测试用例（7 个文件全部通过）
+- 261 个测试用例（33 个文件全部通过）
 
 ## 最近更新
+
+### 2026-02-13: 全面测试套件（228 新测试）+ NaN 修复
+
+**测试套件**：
+- 新增 `tests/helpers/mock-supabase.ts` — 共享 Supabase Mock 工厂（thenable 链式查询模拟）
+- 新增 27 个测试文件，228 个新测试用例，覆盖：
+  - 所有 8 个 API 路由（records, analyze, insights, export, usage, stripe checkout/portal/webhook）
+  - 6 个组件交互测试（analysis-result, record-form-interaction, record-list, reason-chart, sleep-stats, ai-summary）
+  - 4 个页面集成测试（login, settings, history, billing）
+  - 3 个 lib 模块测试（subscription, anthropic, stripe-client）
+  - 中间件路由保护 + OAuth 回调测试
+  - 边界条件测试（时间计算、图表、CSV 导出）
+- 安全测试：所有 API 验证 401、user_id 数据隔离、所有权验证
+- 原有 33 个测试未修改，全部继续通过
+- 最终：261 个测试，33 个文件，0 失败
+
+**Bug 修复**：
+- `app/api/records/route.ts`: `days` 参数为非数字字符串时（如 `?days=abc`），`parseInt` 返回 `NaN` 导致 `RangeError`。修复：添加 `|| 30` 兜底，使 NaN 默认为 30 天
 
 ### 2026-02-11: Landing Page + "Calm Night Sky" 全局暗色主题 + Stripe 订阅计费
 
