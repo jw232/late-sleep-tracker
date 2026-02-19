@@ -28,9 +28,9 @@ const trendIcons = {
 };
 
 const trendColors = {
-  improving: 'text-green-400',
-  worsening: 'text-red-400',
-  stable: 'text-yellow-400',
+  improving: 'text-green-600 dark:text-green-400',
+  worsening: 'text-red-600 dark:text-red-400',
+  stable: 'text-yellow-600 dark:text-yellow-400',
 };
 
 export function AISummary({ analysis, t }: AISummaryProps) {

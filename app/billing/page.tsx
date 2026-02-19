@@ -64,8 +64,8 @@ function BillingContent() {
       {paymentMsg && (
         <div className={`rounded-lg border p-3 text-sm ${
           searchParams.get('payment') === 'success'
-            ? 'border-green-400/30 bg-green-400/5 text-green-300'
-            : 'border-red-400/30 bg-red-400/5 text-red-300'
+            ? 'border-green-600/30 dark:border-green-400/30 bg-green-600/5 dark:bg-green-400/5 text-green-700 dark:text-green-300'
+            : 'border-red-600/30 dark:border-red-400/30 bg-red-600/5 dark:bg-red-400/5 text-red-700 dark:text-red-300'
         }`}>
           {paymentMsg}
         </div>
@@ -109,7 +109,7 @@ function BillingContent() {
                 </Button>
                 <Button disabled={loading} variant="outline" onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY!)}>
                   {t.billing.yearly}
-                  <span className="ml-1 text-xs text-green-400">({t.billing.yearlySave})</span>
+                  <span className="ml-1 text-xs text-green-600 dark:text-green-400">({t.billing.yearlySave})</span>
                 </Button>
               </div>
             </>

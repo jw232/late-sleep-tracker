@@ -94,7 +94,7 @@ export function RecordForm({ t, onSubmit, isLoading }: RecordFormProps) {
               key={score}
               variant={moodScore === score ? 'default' : 'outline'}
               size="sm"
-              className={cn('w-10 h-10', moodScore === score && 'ring-2 ring-offset-2')}
+              className={cn('w-10 h-10', moodScore === score && 'ring-2 ring-offset-2 ring-offset-background')}
               onClick={() => setMoodScore(score)}
             >
               {score}

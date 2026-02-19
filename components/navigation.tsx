@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Moon, ClipboardList, BarChart3, CreditCard, Settings, LogOut } from 'lucide-react';
+import { Moon, Sun, ClipboardList, BarChart3, CreditCard, Settings, LogOut } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { supabase } from '@/lib/supabase/client';
 import { useLocale } from '@/hooks/use-locale';
 import { cn } from '@/lib/utils';
@@ -20,6 +21,7 @@ export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const { locale, setLocale, t } = useLocale();
+  const { theme, setTheme } = useTheme();
   const [userInitial, setUserInitial] = useState<string | null>(null);
   const [isPro, setIsPro] = useState(false);
 
@@ -39,7 +41,7 @@ export function Navigation() {
   if (pathname === '/' && !userInitial) return null;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-white/5 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-border bg-card backdrop-blur-md">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <div className="flex gap-1">
           {navItems.map((item) => {
@@ -63,6 +65,13 @@ export function Navigation() {
           })}
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="rounded-lg p-2 text-muted-foreground hover:bg-muted transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
           <button
             onClick={() => setLocale(locale === 'zh' ? 'en' : 'zh')}
             className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"

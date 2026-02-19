@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useTheme } from 'next-themes';
 
 interface Star {
   x: number;
@@ -13,6 +14,9 @@ interface Star {
 
 export function Starfield() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { resolvedTheme } = useTheme();
+
+  if (resolvedTheme !== 'dark') return null;
   const mouseRef = useRef({ x: 0, y: 0 });
   const starsRef = useRef<Star[]>([]);
 

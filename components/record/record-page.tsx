@@ -109,12 +109,12 @@ export default function RecordPage() {
         <CardContent>
           <RecordForm t={t.record} onSubmit={handleSubmit} isLoading={isLoading} />
           {saved && (
-            <p className="mt-3 text-sm text-green-400 font-medium">
+            <p className="mt-3 text-sm text-green-600 dark:text-green-400 font-medium">
               {t.record.saved}
             </p>
           )}
           {error && (
-            <p className="mt-3 text-sm text-red-400 font-medium">
+            <p className="mt-3 text-sm text-red-600 dark:text-red-400 font-medium">
               {t.record.error}
             </p>
           )}
@@ -124,8 +124,8 @@ export default function RecordPage() {
       {limitReached && (
         <Card className="border-amber-400/30 bg-amber-400/5">
           <CardContent className="pt-6">
-            <p className="font-medium text-amber-300">{t.billing.limitReached}</p>
-            <p className="text-sm text-amber-400/70 mt-1">{t.billing.upgradeToUnlock}</p>
+            <p className="font-medium text-amber-600 dark:text-amber-300">{t.billing.limitReached}</p>
+            <p className="text-sm text-amber-700/70 dark:text-amber-400/70 mt-1">{t.billing.upgradeToUnlock}</p>
             <a href="/billing" className="inline-block mt-3 text-sm font-medium text-primary underline">
               {t.billing.upgrade}
             </a>

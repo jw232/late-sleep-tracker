@@ -88,7 +88,7 @@ export default function LoginPage() {
           {message && (
             <p
               className={`text-sm text-center ${
-                message.type === 'success' ? 'text-green-400' : 'text-destructive'
+                message.type === 'success' ? 'text-green-600 dark:text-green-400' : 'text-destructive'
               }`}
             >
               {message.text}

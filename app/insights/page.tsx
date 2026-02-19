@@ -68,7 +68,7 @@ export default function InsightsPage() {
       {loading ? (
         <p className="text-center text-muted-foreground py-8">Loading...</p>
       ) : error ? (
-        <p className="text-center text-red-400 font-medium py-8">{t.insights.error}</p>
+        <p className="text-center text-red-600 dark:text-red-400 font-medium py-8">{t.insights.error}</p>
       ) : data ? (
         <div className="space-y-6">
           <ReasonChart reasons={data.topReasons} title={t.insights.topReasons} />
@@ -83,8 +83,8 @@ export default function InsightsPage() {
             <AISummary analysis={data.patternAnalysis} t={t.insights} />
           ) : data.totalRecords >= 3 && !data.isPro ? (
             <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-6 text-center">
-              <p className="font-medium text-amber-300">{t.billing.proFeature}</p>
-              <p className="text-sm text-amber-400/70 mt-1">{t.billing.upgradeForPatterns}</p>
+              <p className="font-medium text-amber-600 dark:text-amber-300">{t.billing.proFeature}</p>
+              <p className="text-sm text-amber-700/70 dark:text-amber-400/70 mt-1">{t.billing.upgradeForPatterns}</p>
               <a href="/billing" className="inline-block mt-3 text-sm font-medium text-primary underline">
                 {t.billing.upgrade}
               </a>

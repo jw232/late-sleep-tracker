@@ -8,6 +8,11 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));
 
+// Mock next-themes
+vi.mock('next-themes', () => ({
+  useTheme: () => ({ theme: 'dark', setTheme: vi.fn() }),
+}));
+
 // Mock supabase client (requires env vars at import time)
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {

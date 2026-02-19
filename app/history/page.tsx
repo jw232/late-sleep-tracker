@@ -101,7 +101,7 @@ export default function HistoryPage() {
       </div>
 
       {error && (
-        <p className="text-sm text-red-400 font-medium">{t.history.error}</p>
+        <p className="text-sm text-red-600 dark:text-red-400 font-medium">{t.history.error}</p>
       )}
 
       {/* Record list */}

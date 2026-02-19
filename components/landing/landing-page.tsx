@@ -32,13 +32,13 @@ function FeatureCard({ icon: Icon, title, desc, delay }: { icon: React.ElementTy
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.5, delay }}
       whileHover={{ scale: 1.03, rotateX: 2, rotateY: 2 }}
-      className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 transition-colors hover:border-amber-400/30"
+      className="group bg-card backdrop-blur-md border border-border rounded-2xl p-6 transition-colors hover:border-primary/30"
     >
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
         <Icon className="h-6 w-6" />
       </div>
-      <h3 className="font-[family-name:var(--font-heading)] text-lg font-semibold text-white mb-2">{title}</h3>
-      <p className="text-sm text-white/60 leading-relaxed">{desc}</p>
+      <h3 className="font-[family-name:var(--font-heading)] text-lg font-semibold text-foreground mb-2">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
     </motion.div>
   );
 }
@@ -72,8 +72,8 @@ export default function LandingPage() {
             className="mb-8"
           >
             <div className="relative inline-block">
-              <Moon className="h-16 w-16 text-amber-400" />
-              <div className="absolute inset-0 h-16 w-16 rounded-full bg-amber-400/20 blur-xl animate-pulse" />
+              <Moon className="h-16 w-16 text-primary" />
+              <div className="absolute inset-0 h-16 w-16 rounded-full bg-primary/20 blur-xl animate-pulse" />
             </div>
           </motion.div>
 
@@ -81,7 +81,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl md:text-6xl font-bold text-white max-w-3xl leading-tight"
+            className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl md:text-6xl font-bold text-foreground max-w-3xl leading-tight"
           >
             {l.heroTitle}
           </motion.h1>
@@ -90,7 +90,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-6 text-lg text-purple-200/80 max-w-xl leading-relaxed"
+            className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed"
           >
             {l.heroSubtitle}
           </motion.p>
@@ -112,7 +112,7 @@ export default function LandingPage() {
 
         {/* Features */}
         <Section className="px-6 py-20">
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-white text-center mb-12">
+          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-foreground text-center mb-12">
             {l.featuresTitle}
           </h2>
           <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
@@ -124,17 +124,17 @@ export default function LandingPage() {
 
         {/* How It Works */}
         <Section className="px-6 py-20">
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-white text-center mb-12">
+          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-foreground text-center mb-12">
             {l.howTitle}
           </h2>
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 sm:flex-row sm:gap-4">
             {steps.map((s, i) => (
               <div key={i} className="flex flex-1 flex-col items-center text-center">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 border-amber-400 text-amber-400 font-[family-name:var(--font-heading)] text-xl font-bold">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 border-primary text-primary font-[family-name:var(--font-heading)] text-xl font-bold">
                   {s.num}
                 </div>
-                <h3 className="font-[family-name:var(--font-heading)] text-lg font-semibold text-white mb-2">{s.title}</h3>
-                <p className="text-sm text-white/60">{s.desc}</p>
+                <h3 className="font-[family-name:var(--font-heading)] text-lg font-semibold text-foreground mb-2">{s.title}</h3>
+                <p className="text-sm text-muted-foreground">{s.desc}</p>
                 {i < steps.length - 1 && (
                   <div className="hidden sm:block absolute" />
                 )}
@@ -144,40 +144,40 @@ export default function LandingPage() {
           {/* Connecting lines between steps (desktop) */}
           <div className="mx-auto mt-[-88px] hidden max-w-3xl sm:flex items-start justify-center pointer-events-none">
             <div className="flex-1" />
-            <div className="w-[calc(33%-28px)] border-t border-dashed border-amber-400/30 mt-[28px]" />
+            <div className="w-[calc(33%-28px)] border-t border-dashed border-primary/30 mt-[28px]" />
             <div className="flex-0 w-14" />
-            <div className="w-[calc(33%-28px)] border-t border-dashed border-amber-400/30 mt-[28px]" />
+            <div className="w-[calc(33%-28px)] border-t border-dashed border-primary/30 mt-[28px]" />
             <div className="flex-1" />
           </div>
         </Section>
 
         {/* Pricing */}
         <Section className="px-6 py-20">
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-white text-center mb-12">
+          <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-foreground text-center mb-12">
             {l.pricingTitle}
           </h2>
           <div className="mx-auto grid max-w-2xl gap-6 sm:grid-cols-2">
             {/* Free */}
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:scale-[1.02] transition-transform">
-              <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-white mb-1">{l.free}</h3>
-              <p className="text-3xl font-bold text-white mb-6">{l.freePriceLabel}</p>
+            <div className="bg-card backdrop-blur-md border border-border rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+              <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-foreground mb-1">{l.free}</h3>
+              <p className="text-3xl font-bold text-foreground mb-6">{l.freePriceLabel}</p>
               <ul className="space-y-3">
                 {l.freeFeatures.map((f: string, i: number) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-white/70">
-                    <span className="text-amber-400">&#10003;</span>{f}
+                  <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="text-primary">&#10003;</span>{f}
                   </li>
                 ))}
               </ul>
             </div>
             {/* Pro */}
-            <div className="bg-white/5 backdrop-blur-md border border-amber-400/30 rounded-2xl p-6 hover:scale-[1.02] transition-transform relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-amber-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-bl-xl">PRO</div>
-              <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-white mb-1">{l.pro}</h3>
-              <p className="text-3xl font-bold text-amber-400 mb-6">{l.proPriceLabel}</p>
+            <div className="bg-card backdrop-blur-md border border-primary/30 rounded-2xl p-6 hover:scale-[1.02] transition-transform relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-xl">PRO</div>
+              <h3 className="font-[family-name:var(--font-heading)] text-xl font-bold text-foreground mb-1">{l.pro}</h3>
+              <p className="text-3xl font-bold text-primary mb-6">{l.proPriceLabel}</p>
               <ul className="space-y-3">
                 {l.proFeatures.map((f: string, i: number) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-white/70">
-                    <span className="text-amber-400">&#10003;</span>{f}
+                  <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="text-primary">&#10003;</span>{f}
                   </li>
                 ))}
               </ul>
@@ -187,10 +187,10 @@ export default function LandingPage() {
 
         {/* Final CTA */}
         <Section className="px-6 py-24 text-center">
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-bold text-foreground mb-4">
             {l.finalCTATitle}
           </h2>
-          <p className="text-lg text-purple-200/80 mb-10 max-w-lg mx-auto">
+          <p className="text-lg text-muted-foreground mb-10 max-w-lg mx-auto">
             {l.finalCTASubtitle}
           </p>
           <Link
@@ -202,8 +202,8 @@ export default function LandingPage() {
         </Section>
 
         {/* Footer */}
-        <footer className="border-t border-white/10 px-6 py-8 text-center">
-          <p className="text-sm text-white/40">
+        <footer className="border-t border-border px-6 py-8 text-center">
+          <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} {l.footer}
           </p>
         </footer>
