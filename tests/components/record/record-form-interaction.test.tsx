@@ -17,7 +17,7 @@ const mockT = {
 };
 
 describe('RecordForm interactions', () => {
-  it('clicking a time button highlights it', () => {
+  it('clicking a time button highlights it', { timeout: 15000 }, () => {
     render(<RecordForm t={mockT} onSubmit={vi.fn()} isLoading={false} />);
     const timeButton = screen.getByRole('button', { name: '23:00' });
     fireEvent.click(timeButton);

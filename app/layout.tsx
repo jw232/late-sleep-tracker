@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Space_Grotesk, DM_Sans } from "next/font/google";
 import { Navigation } from "@/components/navigation";
 import { Starfield } from "@/components/landing/starfield";
+import { LocaleProvider } from "@/hooks/use-locale";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,11 +40,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${dmSans.variable} antialiased`}
       >
-        <Starfield />
-        <div className="relative z-10">
-          <Navigation />
-          {children}
-        </div>
+        <LocaleProvider>
+          <Starfield />
+          <div className="relative z-10">
+            <Navigation />
+            {children}
+          </div>
+        </LocaleProvider>
       </body>
     </html>
   );

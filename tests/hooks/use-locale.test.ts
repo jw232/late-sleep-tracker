@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useLocale } from '@/hooks/use-locale';
+import { useLocale, LocaleProvider } from '@/hooks/use-locale';
 
 describe('useLocale', () => {
   beforeEach(() => {
@@ -8,12 +8,12 @@ describe('useLocale', () => {
   });
 
   it('defaults to zh', () => {
-    const { result } = renderHook(() => useLocale());
+    const { result } = renderHook(() => useLocale(), { wrapper: LocaleProvider });
     expect(result.current.locale).toBe('zh');
   });
 
   it('switches to en', () => {
-    const { result } = renderHook(() => useLocale());
+    const { result } = renderHook(() => useLocale(), { wrapper: LocaleProvider });
     act(() => {
       result.current.setLocale('en');
     });
@@ -21,7 +21,7 @@ describe('useLocale', () => {
   });
 
   it('returns English content after switching to en', () => {
-    const { result } = renderHook(() => useLocale());
+    const { result } = renderHook(() => useLocale(), { wrapper: LocaleProvider });
     act(() => {
       result.current.setLocale('en');
     });
@@ -29,7 +29,7 @@ describe('useLocale', () => {
   });
 
   it('has complete t object structure', () => {
-    const { result } = renderHook(() => useLocale());
+    const { result } = renderHook(() => useLocale(), { wrapper: LocaleProvider });
     const t = result.current.t;
     expect(t).toHaveProperty('nav');
     expect(t).toHaveProperty('record');
@@ -40,7 +40,7 @@ describe('useLocale', () => {
   });
 
   it('persists language preference to localStorage', () => {
-    const { result } = renderHook(() => useLocale());
+    const { result } = renderHook(() => useLocale(), { wrapper: LocaleProvider });
     act(() => {
       result.current.setLocale('en');
     });
