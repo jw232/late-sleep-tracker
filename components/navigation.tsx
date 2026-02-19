@@ -40,7 +40,7 @@ export function Navigation() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/10 bg-white/5 backdrop-blur-md">
-      <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <div className="flex gap-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
