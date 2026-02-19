@@ -15,41 +15,47 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing priceId' }, { status: 400 });
   }
 
-  // Check if user already has a Stripe customer
-  const { data: sub } = await getSupabaseAdmin()
-    .from('subscriptions')
-    .select('stripe_customer_id')
-    .eq('user_id', user.id)
-    .single();
+  try {
+    // Check if user already has a Stripe customer
+    const { data: sub } = await getSupabaseAdmin()
+      .from('subscriptions')
+      .select('stripe_customer_id')
+      .eq('user_id', user.id)
+      .single();
 
-  let customerId = sub?.stripe_customer_id;
+    let customerId = sub?.stripe_customer_id;
 
-  if (!customerId) {
-    // Create Stripe customer
-    const customer = await getStripe().customers.create({
-      email: user.email,
+    if (!customerId) {
+      // Create Stripe customer
+      const customer = await getStripe().customers.create({
+        email: user.email,
+        metadata: { user_id: user.id },
+      });
+      customerId = customer.id;
+
+      // Save customer ID
+      await getSupabaseAdmin().from('subscriptions').upsert({
+        user_id: user.id,
+        stripe_customer_id: customerId,
+        status: 'free',
+      });
+    }
+
+    const origin = request.headers.get('origin') || 'http://localhost:3000';
+
+    const session = await getStripe().checkout.sessions.create({
+      customer: customerId,
+      mode: 'subscription',
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: `${origin}/billing?payment=success`,
+      cancel_url: `${origin}/billing?payment=canceled`,
       metadata: { user_id: user.id },
     });
-    customerId = customer.id;
 
-    // Save customer ID
-    await getSupabaseAdmin().from('subscriptions').upsert({
-      user_id: user.id,
-      stripe_customer_id: customerId,
-      status: 'free',
-    });
+    return NextResponse.json({ url: session.url });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Checkout failed';
+    console.error('Stripe checkout error:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  const origin = request.headers.get('origin') || 'http://localhost:3000';
-
-  const session = await getStripe().checkout.sessions.create({
-    customer: customerId,
-    mode: 'subscription',
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${origin}/billing?payment=success`,
-    cancel_url: `${origin}/billing?payment=canceled`,
-    metadata: { user_id: user.id },
-  });
-
-  return NextResponse.json({ url: session.url });
 }
