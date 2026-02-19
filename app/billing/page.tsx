@@ -21,6 +21,7 @@ function BillingContent() {
   const { t } = useLocale();
   const [sub, setSub] = useState<SubscriptionStatus | null>(null);
   const [paymentMsg, setPaymentMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch('/api/usage').then(r => r.json()).then(setSub).catch(() => {});
@@ -31,13 +32,21 @@ function BillingContent() {
   }, [searchParams, t.billing.paymentSuccess, t.billing.paymentCanceled]);
 
   const handleCheckout = async (priceId: string) => {
-    const res = await fetch('/api/stripe/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ priceId }),
-    });
-    const { url } = await res.json();
-    if (url) window.location.href = url;
+    setLoading(true);
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
+      });
+      const { url, error } = await res.json();
+      if (url) window.location.href = url;
+      else setPaymentMsg(error || 'Checkout failed');
+    } catch {
+      setPaymentMsg('Network error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePortal = async () => {
@@ -53,7 +62,11 @@ function BillingContent() {
 
       {/* Payment message */}
       {paymentMsg && (
-        <div className="rounded-lg border border-green-400/30 bg-green-400/5 p-3 text-sm text-green-300">
+        <div className={`rounded-lg border p-3 text-sm ${
+          searchParams.get('payment') === 'success'
+            ? 'border-green-400/30 bg-green-400/5 text-green-300'
+            : 'border-red-400/30 bg-red-400/5 text-red-300'
+        }`}>
           {paymentMsg}
         </div>
       )}
@@ -91,10 +104,10 @@ function BillingContent() {
                 {t.billing.currentPlan}: {t.billing.freePlan}
               </p>
               <div className="flex gap-2">
-                <Button onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY!)}>
-                  {t.billing.monthly}
+                <Button disabled={loading} onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY!)}>
+                  {loading ? '...' : t.billing.monthly}
                 </Button>
-                <Button variant="outline" onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY!)}>
+                <Button disabled={loading} variant="outline" onClick={() => handleCheckout(process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY!)}>
                   {t.billing.yearly}
                   <span className="ml-1 text-xs text-green-400">({t.billing.yearlySave})</span>
                 </Button>

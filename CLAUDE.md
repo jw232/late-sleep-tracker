@@ -349,8 +349,8 @@ npm run test:watch # 监听模式测试（vitest）
 
 1. **Google OAuth**: Google Cloud Console 创建 OAuth Client → Supabase Dashboard → Providers → Google 填入 Client ID/Secret
 2. **Redirect URL**: Supabase Dashboard → Authentication → URL Configuration:
-   - **Site URL**: `https://late-sleep-tracker.vercel.app`
-   - **Redirect URLs**: `http://localhost:3000/**`（本地开发）+ `https://late-sleep-tracker.vercel.app/**`（生产环境）
+   - **Site URL**: `https://sleeplate.xyz`
+   - **Redirect URLs**: `http://localhost:3000/**`（本地开发）+ `https://sleeplate.xyz/**`（生产环境）
 3. **Magic Link**: Supabase 默认启用 Email provider
 
 ## 项目状态
