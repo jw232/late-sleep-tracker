@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
       ).join('\n');
 
       const response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-5-20250929',
+        model: 'claude-sonnet-4-6',
         system: `You are a sleep pattern analyst. Analyze the user's sleep records and identify patterns.
 Respond ONLY with valid JSON in this exact format:
 {

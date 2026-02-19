@@ -122,11 +122,11 @@ describe('POST /api/analyze', () => {
 
   // Anthropic API call tests (5-9)
   describe('Anthropic API calls', () => {
-    it('uses correct model claude-sonnet-4-5-20250929', async () => {
+    it('uses correct model claude-sonnet-4-6', async () => {
       const { POST } = await importRoute();
       await POST(makeRequest());
       expect(mockAnthropicCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ model: 'claude-sonnet-4-5-20250929' })
+        expect.objectContaining({ model: 'claude-sonnet-4-6' })
       );
     });
 

@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: 'claude-sonnet-4-6',
       system: `You are a sleep habit analyst. Analyze the user's late sleep reason and provide structured feedback.
 Respond ONLY with valid JSON in this exact format:
 {
